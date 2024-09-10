@@ -5,4 +5,4 @@ order: 4
 ---
 
 > Hello I'm Andrew!
-I know a thing or two about Math,Stats and tech. Welcome to lostalgorithm.com, where Quant stuff is explained in gentle terms.
+I know a thing or two about Math,Stats and tech. Welcome to this blog, where Quant stuff is explained in gentle terms.
