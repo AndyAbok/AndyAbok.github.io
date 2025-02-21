@@ -1,12 +1,11 @@
 ---
 layout: post
-title: The Levenberg-Marquardt algorithm
+title: Notes On What Makes An Asset Useful
 date: 2025-02-03 00:00:00 +0300
 categories: [Capital Markets]
 tags: [Capital Markets]
 math: true
 ---
-# Notes On What Makes An Asset Useful
 
 ## Introduction
 This write up is on notes the paper What makes an asset useful by Dr. Yves-Laurent Kom Samoa and  Dr. Dieter Hendricks ,The author introduces new methodologies on how to determine which assets to invest in focusing on four key aspects.
