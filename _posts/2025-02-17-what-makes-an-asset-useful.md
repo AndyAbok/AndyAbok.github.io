@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Notes On What Makes An Asset Useful
-date: 2025-02-03 00:00:00 +0300
+date: 2025-02-17 00:00:00 +0300
 categories: [Capital Markets]
 tags: [Capital Markets]
 math: true
@@ -82,9 +82,7 @@ The relative error is defined as  $100 ×  \frac{(ℎ − \hat{ℎ})}{|h|}$
 A time series of returns $y_t$ can be considered sufficiently predictable if there exists a stream of information available at time t that reduces the uncertainty about future values at time  $t+p$, $p>0$ 
 
 It would be impractical to determine whether future values of a return series can be predicted using any information that currently exists whether we have access to it or not Instead, the authors focus on quantifying whether a time series can be predicted using data that we do have access to, starting with all past values of the time series, and then generalizing to any stream of information that can be accessed.
-
-
-When $y_t$ is strongly stationary, the entropy rate $ℎ(y_t)$ always exists and it can be shown that $h(y_t|y_{t-1},...,y_1)$ decreases with t thus:
+When $y_t$ is strongly stationary, the entropy rate $h(y_t)$ always exists and it can be shown that $h(y_t|y_{t-1},...,y_1)$ decreases with t thus:
 
 $$
 PR(\{y_t\}) = h(y_t) - h(\{y_t\})
