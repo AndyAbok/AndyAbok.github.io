@@ -24,13 +24,18 @@ $x = (x_1,...x_n)$ which can be written as $f_i(x)=0,i=1,..,m$.
 for any x we call $f_i(x)$ which is the ith residual. 
 
 we can seek an approximate solution by finding x that minimizes the sum of squares of the residuals 
+
 $$
 f_1(x)^2 +..+f_m(x)^2 = ||f(x)||^2 also || f(x)||^2 \geq ||f\hat{x}||^2
 $$
 
-simply put this translates to $minimize||f(x)||^2$ the optimal condition to be met is the partial derivatives of $f(x)$ with respect to each $x_1,....,x_n$ must vanish at $\hat{x}$ 
+simply put this translates to
 
-Your notes are quite detailed! Let's refine them for clarity and flow. Here's an improved version:
+$$
+minimize||f(x)||^2
+$$ 
+
+the optimal condition to be met is the partial derivatives of $f(x)$ with respect to each $x_1,....,x_n$ must vanish at $\hat{x}$ 
 
 ### Gauss–Newton Method
 
