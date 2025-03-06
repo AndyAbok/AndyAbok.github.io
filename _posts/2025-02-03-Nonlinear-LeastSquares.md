@@ -8,8 +8,6 @@ math: true
 canonical_url: https://blogs.innova.co.ke/nonlinear-least-squares/
 ---
 
-# The Levenberg-Marquardt algorithm
-
 ## Non linear Least Squares
 
 This post was originally published on the <a href="https://blogs.innova.co.ke/nonlinear-least-squares/" target="_blank">Innova official blog</a>.
