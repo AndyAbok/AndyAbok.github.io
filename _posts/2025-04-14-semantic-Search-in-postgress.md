@@ -2,7 +2,7 @@
 layout: post
 title: Semantic Search in PostgreSQL Using pgvector
 date: 2025-04-01 00:00:00 +0300
-categories: [Optimization]
+categories: [Natural lanaguage processing]
 tags: [NLP,Python,Postgress]
 math: true
 ---
