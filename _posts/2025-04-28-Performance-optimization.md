@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Chasing Performance: Deconstructing Python Bytecode, Emitted Machine Code, and F# Efficiency
+title: Chasing Performance-Deconstructing Python Bytecode, Emitted Machine Code, and F# Efficiency
 date: 2025-04-28 00:00:00 +0300
 categories: [Perfomance Optimization]
 tags: [Python,F#]
