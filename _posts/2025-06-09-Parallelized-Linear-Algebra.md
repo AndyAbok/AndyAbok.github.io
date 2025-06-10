@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Parallelized Linear Algebra in Practice-Polynomial Regression, BLAS, and F#
-date: 2025-04-28 00:00:00 +0300
+date: 2025-06-09 00:00:00 +0300
 categories: [Computational Numerics]
 tags: [Python,F#,Perfomance]
 math: true
