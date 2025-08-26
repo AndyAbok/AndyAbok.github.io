@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: Solving Least Squares Problems  
