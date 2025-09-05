@@ -2,7 +2,7 @@
 layout: post
 title: Notes On Arbitrage Asset Pricing 
 date: 2025-09-01 00:00:00 +0300
-categories: [Machine Learning]
+categories: [Financial Mathematics]
 tags: [Financial Mathematics]
 math: true
 ---
