@@ -1,10 +1,10 @@
 ---
 layout: post
-title: Multi-Objective Evolutionary Portfolio Optimization: A Practical Guide with Kenyan Equities Data
+title: Multi-Objective Evolutionary Portfolio Optimization-A Practical Guide with Kenyan Equities Data
 date: 2026-02-23 00:00:00 +0300
 categories: [Optimization]
 tags: [Python,Captial Markets]
-math:true
+math: true
 ---
 
 ## Introduction
