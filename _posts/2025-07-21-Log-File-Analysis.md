@@ -8,33 +8,36 @@ math: true
 ---
 
 
-## Introduction 
-This post was originally published on the <a href="https://blogs.innova.co.ke/log-file-analysis/" target="_blank">Innova official blog</a>.
+## Introduction
 
+This post was originally published on the <a href="https://blogs.innova.co.ke/log-file-analysis/" target="_blank">Innova official blog</a>.
 
 Formal specifications provide a clear framework for defining software behavior, yet connecting these specifications to actual programs in an automated and practical manner remains a significant challenge, especially in languages without well-defined semantics (Andrews, 1998). This project leverages log file analysis as a practical approach to bridge this gap, enabling the extraction of meaningful insights from program observables to improve software reliability and debugging.
 
 Logs, which capture system run-time information, provide valuable insights into system behavior and issues. Traditional manual methods, like keyword searches and rule-based matching, struggle with the growing volume and complexity of modern systems. Leveraging LLMs and NLP enables efficient and accurate extraction of insights, reducing reliance on manual effort.
 
 ## Challenges in Log Analysis for Modern Systems
+
 1. **Complex System Behaviors**: Modern systems are large-scale and parallel, making it difficult for developers—who often work on sub-components—to fully understand overall system behavior. This incomplete understanding complicates issue identification from logs (He et al., 2016).
 
 2. **Sheer Volume of Logs**: Systems generate massive amounts of logs (e.g., 50 GB/hour), making manual analysis impractical. Tools like search and grep are insufficient to filter key information from noise (He et al., 2016).
 
 3. **Ineffective Traditional Methods**: Fault-tolerant mechanisms, such as redundant tasks and speculative executions, render keyword-based searches ineffective. This leads to false positives, increasing the effort required for manual inspection (He et al., 2016).
 
+## Automated Log Analysis
 
-## Automated Log Analysis 
 The process of log analysis for anomaly detection involves four main steps: log collection, log parsing, feature extraction, and anomaly detection.
 
-### Overall Framework 
+### Overall Framework
 
-![][image_ref_5ige2q76]
+![alt1][image_ref_5ige2q76]
 
-#### **Log Reading** 
+#### **Log Reading**
+
 The first step in log analysis is to read and parse raw log files into structured data. This involves extracting key components such as date, time, log level, and log message from each log line.
 
 ##### 1.1. Key Components
+
 Each log line is parsed into the following components:
 
 1. **Date**: The date when the log entry was generated.
@@ -46,6 +49,7 @@ Each log line is parsed into the following components:
 4. **Log Message**: The actual content of the log.
 
 ##### 1.2. Log Parsing Process
+
 The parsing process involves the following steps:
 
 **Pattern Matching**:
@@ -61,6 +65,7 @@ The parsing process involves the following steps:
 Log files are processed line by line.Multi-line log entries are concatenated into a single log message.
 
 ##### 1.3. Pseudocode
+
 ```julia
 1. Initialize LogProcessor with default patterns.
 2. For each log file:
@@ -73,30 +78,33 @@ Log files are processed line by line.Multi-line log entries are concatenated int
 3. Return structured log data.
 ```
 
+#### **Log parsing**
 
-#### **Log parsing** 
 Logs are unstructured, which contain free form text. The purpose of log parsing is to extract a group of event templates, whereby raw logs can be structured. More specifically, each log message can be parsed into a event template (constant part) with some specific parameters (variable part). 
 
-
 ##### **2.1. Constant vs. Variable Parts**
-- Constant Parts are Static text that remains the same across log entries 
+
+- Constant Parts are Static text that remains the same across log entries
 - Variable Parts: Dynamic values that change between log entries
 
 Lets look at example using the Innova market stats api log file:
+
 > - Raw Log: `NSEEquities will run again after 10 minutes"`
 > - Parsed Template: `"* [INF] NSEEquities will run again after * minutes"`
 
-
 ##### **2.2 Log Parsing Methods**
+
 There are two main approaches to log parsing:
 
 ###### **A. Heuristic-Based Parsing**
+
 - **How It Works**:
   1. Counts word frequencies at each position in the log.
   2. Identifies frequent words as constant parts.
   3. Replaces variable parts with `*`.
 
 **Pseudocode**:
+
 ```julia
 def heuristicBasedParsing(logs):
     wordCounts = countWordFrequencies(logs)
@@ -105,13 +113,14 @@ def heuristicBasedParsing(logs):
     return templates
 ```
 
-
 ###### **B. Clustering-Based Parsing**
+
 - **How It Works**:
   1. Groups similar logs into clusters using k-means.
   2. Generates templates by identifying constant and variable parts within each cluster.
 
 **Pseudocode**:
+
 ```julia
 def clusteringBasedParsing(logs, n_clusters):
     logVectors = vectorizeLogs(logs)
@@ -120,15 +129,15 @@ def clusteringBasedParsing(logs, n_clusters):
     return templates
 ```
 
-
----
-
 ##### **2.3. Template Generation**
+
 Templates are generated by comparing words at the same position across log lines:
+
 - If all words at a position are the same, it’s a **constant part**.
 - If words differ, it’s a **variable part** (replaced with `*`).
 
 **Pseudocode**:
+
 ```julia
 def generateTemplateFromCluster(clusterLogs):
     words = [log.split() for log in clusterLogs]
@@ -144,10 +153,10 @@ def generateTemplateFromCluster(clusterLogs):
     return ' '.join(template)
 ```
 
----
-
 #### **4. Example**
+
 **Input Logs**:
+
 ```plaintext
 2024-06-30 00:02:06.899 [INF] NSEEquities will run again after 10 minutes
 2024-06-30 00:02:14.118 [INF] GSEEquities Importer started!
@@ -158,6 +167,7 @@ def generateTemplateFromCluster(clusterLogs):
 ```
 
 **Parsed Templates**:
+
 ```plaintext
 1. * [INF] NSEEquities will run again after * minutes
 2. * [INF] GSEEquities Importer started!
@@ -165,23 +175,24 @@ def generateTemplateFromCluster(clusterLogs):
 4. * [INF] LUSEEquities [match] *: *: *: * attachment(s)
 ```
 
-
 #### Feature extraction
-After parsing logs into individual events, they are grouped into sequences using techniques like fixed, sliding, or session windows. Each sequence is then converted into a numerical feature vector, representing the frequency of specific events. These vectors are combined to form a feature matrix, which serves as input for machine learning models. This structured approach enables effective analysis and pattern detection in log data.
 
+After parsing logs into individual events, they are grouped into sequences using techniques like fixed, sliding, or session windows. Each sequence is then converted into a numerical feature vector, representing the frequency of specific events. These vectors are combined to form a feature matrix, which serves as input for machine learning models. This structured approach enables effective analysis and pattern detection in log data.
 
 The goal of feature extraction is to transform parsed log events into numerical features that can be used as input for anomaly detection models. This process involves grouping logs into sequences and generating an **event count matrix**.
 
 ##### **3.1. Windowing Techniques**
+
 Logs are grouped into sequences using windowing techniques. Each sequence represents a finite chunk of log data.This can be achieved in two ways
+
 * [ ] **A. Fixed Window** - Divides logs into non-overlapping chunks based on a fixed time interval (e.g., 1 hour or 1 day).
 
 * [ ] **B. Sliding Window** - Divides logs into overlapping chunks based on a window size and step size (e.g., hourly windows sliding every 5 minutes).
 
 * [ ] **C. Session Window** - Groups logs based on identifiers (e.g., `block_id` in HDFS logs) rather than timestamps.
 
-
 ##### **3.2. Event Count Matrix**
+
 After grouping logs into sequences, an **event count matrix** is generated. Each row in the matrix represents a log sequence, and each column represents a log event. The value at position `(i, j)` indicates how many times event `j` occurred in sequence `i`.
 
 Let:
@@ -191,6 +202,7 @@ Let:
 * $X$ = event count matrix of size $n \times m$
 
 **Pseudocode**:
+
 ```julia
 def generateEventCountMatrix(logSequences, eventTemplates):
     eventCountMatrix = []
@@ -206,6 +218,7 @@ def generateEventCountMatrix(logSequences, eventTemplates):
 Principal Component Analysis (PCA) is used for unsupervised anomaly detection. PCA reduces the dimensionality of the event count matrix and identifies anomalies based on deviations from normal behavior.
 
 ##### 4.1. PCA Overview
+
 PCA is a statistical method that projects high-dimensional data onto a lower-dimensional space while preserving the maximum variance. The methodology underpinning the dimensionality reductions are:
 
 1. **Dimensionality Reduction:**
@@ -219,20 +232,24 @@ k principal components.
 Anomalies are identified by measuring the Squared Prediction Error (SPE) in the residual space.
 
 ##### 4.2. Mathematical Framework
+
 ***Step 1 : PCA Transformation***
 
 1. Compute the covariance matrix $C$ of $X$ 
+
 $$
 C = \frac{1}{n}X^TX
 $$
 
-2. Perform eigen value decomposition on $C$ 
+2.Perform eigen value decomposition on $C$
+
 $$
 C = V \Lambda V^T
 $$
 
 Where:
 * $V$ = matrix of eigenvectors(principal components)
+
 * $\Lambda$ = diagonal matrix of eigenvalues 
 
 3. Select the first $k$ eigenvectors $V_k = [v_1,v_2,...,v_k]$ that captures 95% of the variance.
@@ -245,40 +262,49 @@ $$
 
 ***Step 2 : Anomaly Detection***
 1. Compute the residual space $S_a$:
+
 $$
 S_a = I - V_kV_k^T
 $$
 2. Project $X$ onto the residual space:
+
 $$
 y_A = XS_a
 $$
 
 3. Calculate the Squared Prediction Error (SPE)
+
 $$
 SPE = ||y_a||^2
 $$
 
 4. classify anomalies
+
 - if $SPE > Q_a$ the sequence is an anomaly.
 - $Q_a$ is the threshold calculated using the chi-squared distribution:
+
 $$  
 Q_a = \chi^2_{1-\alpha}(m - k)
 $$
 Where:
+
 * $\alpha$ is the significance level
 * $m$ is the original number of features.
 * $k$ is the number of principal component
 
-
 **Pseudocode**
+
 > 1. Initialize PCA model with variance threshold
 > 2. Fit PCA model to event count matrix:
+
 > * Compute principal components.
 > 
 > * Project data onto residual space.
 > 
 > 3. Calculate Squared Prediction Error (SPE) for each sequence:
-> * Compute $SPE = ||y_a||^2$,where $y_a$ is the projection onto residual space
+> * Compute 
+> $SPE = ||y_a||^2$,
+> where $y_a$ is the projection onto residual space
 > 
 > 4. Classify anomalies:
 > * if $SPE > Q_{\alpha}$ mark sequence as anomalous.
@@ -288,9 +314,11 @@ Where:
 
 
 #### Error Clustering
+
 After parsing the logs, the next step is to cluster similar error messages to identify common patterns and reduce noise. This is achieved using TF-IDF vectorization and K-Means clustering.
 
 ##### 4.1. Clustering Process
+
 1. ***TF-IDF Vectorization***:
 Here we convert error messages into numerical vectors based on word frequency.Rare words are given higher importance, while common words are down weighted.
 
@@ -313,8 +341,8 @@ So for each cluster, the error message closest to the cluster centroid is select
 6. Return clusters and representative errors.
 ```
 
-
 ## References
+
 * Andrews, J. H. (1998, October). Testing using log file analysis: tools, methods, and issues. In Proceedings 13th IEEE International Conference on Automated Software Engineering (Cat. No. 98EX239) (pp. 157-166). IEEE.
 
 
