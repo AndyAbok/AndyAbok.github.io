@@ -14,8 +14,7 @@ normal to pass a function to another function and let it decide when to call it.
 
 A couple of weeks ago while I was working on a market-data import in .NET i ran into a scenario that made me learn that Funcs are just delegates in C#.
 
-I already knew what a slow import felt like. I wrote about one in
-[Django](%7B%%20post_url%202026-02-09-When-Writes-Hurt-More-Than-Reads%20%%7D),
+I already knew what a slow import felt like. I wrote about one in When Write hurt more than reads,
 where the pain was the database and the fix was to stop saving one row
 at a time. So when working on a data import service in .NET, I
 reached for the same shape.Page through the API then map each price. Buffer a few hundred. Write the buffer. If a batch fails, retry that batch one row at a time so one bad record does not throw away the rest, well this is more than that but you get my drift i was bowwrong alot of my thought process from there.
